@@ -303,7 +303,7 @@ module.exports =  {
         var columnName=req.query.statusFlag==1?'locker_flag':'membership_flag';
         return new Promise((resolve, reject) => {
               console.log(where)
-                connection.MembershipBilling.sequelize.query('SELECT * from membership_bilings where (from_date >= "'+data.fromDate+'" or from_date <= "'+data.toDate+'") and (to_date >= "'+data.fromDate+'" and to_date <= "'+data.toDate+'") and '+columnName+'=1',
+                connection.MembershipBilling.sequelize.query('SELECT * from membership_bilings where (DATE(bill_date) >= "'+data.fromDate+'" AND DATE(bill_date) <= "'+data.toDate+'") and '+columnName+'=1',
                 )
                   .then(member => {
                     console.log(member)

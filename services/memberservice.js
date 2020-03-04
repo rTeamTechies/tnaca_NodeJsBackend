@@ -17,17 +17,13 @@ module.exports =  {
 }
 function getMembers(req,res){
 	return memberDAO.getMembers(req).then(function(response){
-		var finalResult="";
-		console.log(response)
+		var finalResult="";	
 		if(response!=null){
 			var result=[];
-			console.log(response)
 			response.forEach(member => {
-				console.log(member)
 						result.push(member.dataValues);
 			});
 			finalResult={
-				
 				"status" : "Success",
 				"data" : result
 			}
@@ -43,12 +39,9 @@ function getMembers(req,res){
 function getMembersByFlag(req,res){
 	return memberDAO.getMembersByFlag(req).then(function(response){
 		var finalResult="";
-		console.log(response)
 		if(response!=null){
 			var result=[];
-			console.log(response)
 			response.forEach(member => {
-				console.log(member)
 						result.push(member.dataValues);
 			});
 			finalResult={
@@ -68,10 +61,7 @@ function getMembersByFlag(req,res){
 function getCost(req,res){
 	return memberDAO.getCost().then(function(response){
 		var finalResult="";
-		console.log(response)
 		if(response!=null){
-			
-				console.log(response)
 			finalResult={
 				
 				"status" : "Success",
@@ -90,9 +80,7 @@ function getCost(req,res){
 function getAdvDonation(req,res){
 	return memberDAO.getAdvocateDonationData().then(function(response){
 		var finalResult="";
-		console.log(response)
 		if(response!=null){
-				console.log(response)
 			finalResult={
 				"status" : "Success",
 				"data" : response
@@ -173,7 +161,6 @@ function editMember(req,res){
 	var finalResult="";
 	if(req.body.memberId!=null&&req.body.memberId!=0){
 		return memberDAO.editMember(req.body).then(function (response){
-			console.log(response)
 			if(response!=null){
 					finalResult={
 						"status" : "Success",
@@ -198,7 +185,6 @@ function editMember(req,res){
 function getMemberById(req,res){
 	return memberDAO.getMembersById(req.query.rollNo).then(function(response){
 		var finalResult="";
-		console.log(response)
 		if(response!=null){
 			finalResult={
 				
@@ -265,7 +251,6 @@ function memberPayment(req,res){
 				var flag=req.body.membershipFlag==1?'member':'locker';
 				var billNo=formatBill(flag,reponseData)
 			return memberDAO.makePayment(req.body,billNo).then(function (response){
-				console.log(response)
 				if(response!=null){
 						finalResult={
 							"status" : "Success",
@@ -323,7 +308,6 @@ function getMemberPayment(req,res){
 function generateRequestData(req){
 	var data="";
 	if(req.query.reportFlag==1){
-		console.log(getTodayDate())
 		data={
 			"lockerFlag" : req.query.lockerFlag,
 			"currentDate" : getTodayDate()
@@ -395,7 +379,6 @@ function surrenderLocker(req,res){
 	var finalResult="";
 	if(req.body.billNo!=null&&req.body.billNo!=undefined&&req.body.billNo!=""){
 		return memberDAO.surrenderLocker(req.body,getTodayDate()).then(function (response){
-			console.log(response)
 			if(response!=null){
 					finalResult={
 						"status" : "Success",

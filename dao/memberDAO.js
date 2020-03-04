@@ -92,7 +92,6 @@ module.exports =  {
               }
             })
               .then(result => {
-                  console.log(result)
                   resolve(result);
               })
           })
@@ -105,7 +104,6 @@ module.exports =  {
       return new Promise((resolve, reject) => {
           connection.MembershipBilling.count()
             .then(result => {
-                console.log(result)
                 resolve(result);
             })
         })
@@ -119,7 +117,6 @@ module.exports =  {
       return new Promise((resolve, reject) => {
           connection.JudgeCost.count()
             .then(result => {
-                console.log(result)
                 resolve(result);
             })
         })
@@ -132,7 +129,6 @@ module.exports =  {
       return new Promise((resolve, reject) => {
           connection.AdvocateDonation.count()
             .then(result => {
-                console.log(result)
                 resolve(result);
             })
         })
@@ -168,7 +164,6 @@ module.exports =  {
         return new Promise((resolve, reject) => {
           connection.Members.create(saveData)
           .then((rowsUpdated)=> {
-            console.log(rowsUpdated[0])
               resolve(rowsUpdated);
           })
         })
@@ -236,7 +231,6 @@ module.exports =  {
         return new Promise((resolve, reject) => {
           connection.MembershipBilling.create(saveData)
           .then((rowsUpdated)=> {
-            console.log(rowsUpdated[0])
               resolve(rowsUpdated);
           })
         })
@@ -273,23 +267,18 @@ module.exports =  {
       })
   }
   function getMemberPaymentByFlag(data,reportFlag,req){
-    console.log(JSON.stringify(data))
     var where=generatewhere(data,reportFlag);
-    console.log(where)
     if(reportFlag!=2){
       if(reportFlag==1){
         return new Promise((resolve, reject) => {
-          console.log(where)
             connection.MembershipBilling.sequelize.query('SELECT * from membership_bilings where (to_Date >= "'+data.currentDate+'" ) and locker_flag='+data.lockerFlag+'',
             )
               .then(member => {
-                console.log(member)
                   resolve(member[0]);
               })
           })
       }else{
         return new Promise((resolve, reject) => {
-          console.log(where)
             connection.MembershipBilling.findAll({
               attributes: { exclude: ['created_at','updated_at','created_user_id','upd_user_id'] },
               where : where
@@ -302,11 +291,9 @@ module.exports =  {
       }else{
         var columnName=req.query.statusFlag==1?'locker_flag':'membership_flag';
         return new Promise((resolve, reject) => {
-              console.log(where)
                 connection.MembershipBilling.sequelize.query('SELECT * from membership_bilings where (DATE(bill_date) >= "'+data.fromDate+'" AND DATE(bill_date) <= "'+data.toDate+'") and '+columnName+'=1',
                 )
                   .then(member => {
-                    console.log(member)
                       resolve(member[0]);
                   })
               })
@@ -383,7 +370,6 @@ module.exports =  {
       return new Promise((resolve, reject) => {
         connection.AdvocateDonation.create(saveData)
         .then((rowsUpdated)=> {
-          console.log(rowsUpdated[0])
             resolve(rowsUpdated);
         })
       })
@@ -396,7 +382,6 @@ module.exports =  {
 	return new Promise((resolve, reject) => {		
 			connection.MembershipBilling.sequelize.query('SELECT * from membership_bilings where (to_date >= "'+fromDate+'" and from_date <= "'+toDate+'" and locker_id = "'+lockerNo+'")')
 			  .then(member => {
-				console.log(member)
 				  resolve(member[0]);
 			  })
 		  })

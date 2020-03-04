@@ -18,7 +18,7 @@ const JudgeCost = JudgeCostDetails(sequelizeData,Sequelize.DataTypes);
 const AdvocateDonation = AdvocateDonationDetails(sequelizeData,Sequelize.DataTypes);
 
 sequelizeData.sync().then(() => {
-     console.log("DB connected")
+     console.log("DB connected successfully...!")
 });
 
 module.exports =  {

@@ -31,7 +31,6 @@ function updatePassword(data){
         }
       )
         .then((rowsUpdated)=> {
-          console.log(rowsUpdated[0])
             resolve(rowsUpdated);
         })
       })
@@ -51,7 +50,6 @@ function saveCrendentials(data){
       return new Promise((resolve, reject) => {
         connection.User.create(saveData)
         .then((rowsUpdated)=> {
-          console.log(rowsUpdated[0])
             resolve(rowsUpdated);
         })
       })
@@ -68,7 +66,6 @@ function checkUserCount(data){
             }
           })
             .then(result => {
-                console.log(result)
                 resolve(result);
             })
         })

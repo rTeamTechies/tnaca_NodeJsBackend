@@ -12,7 +12,6 @@ function login(req,res){
 		var finalResult;
 		return authDAO.checkCredentials(req.body).then(function (response){
 			if(response!=null && response!='undefined'){
-				console.log(response.dataValues.password)
 				if(bcrypt.compareSync(req.body.password,response.dataValues.password)){
 					finalResult={
 						"status" : "Success",
@@ -50,7 +49,6 @@ function signup(req,res){
 				return getHashPassword(req.body.password).then(function(passwordResponse){
 					req.body.password=passwordResponse;
 					return authDAO.saveCrendentials(req.body).then(function (response){
-						console.log(response)
 						if(response!=null){
 								finalResult={
 									"status" : "Success",

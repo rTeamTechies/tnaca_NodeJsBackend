@@ -136,12 +136,13 @@ function formatBill(table,id){
 	var date = new Date();
 	if(table=='cost'){
 		billNo = date.getFullYear()+"/JC/"+count;
-	}else if(table=='advocate')
-		billNo = date.getFullYear()+"/AD/"+count;
+		billNo = count+"/JC/"+date.getFullYear();
+	}else if(table=='advocate')		
+		billNo = count+"/AD/"+date.getFullYear();
 	else if(table=='member')
-		billNo = date.getFullYear()+"/M/"+count;
-	else
-	billNo = date.getFullYear()+"/L/"+count;
+		billNo = count + "/"+ date.getFullYear();
+	else	
+	billNo = count+"/L/"+date.getFullYear();
 	return billNo.toString();
 }
 function addAdvDonation(req,res){

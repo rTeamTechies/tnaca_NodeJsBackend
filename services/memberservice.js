@@ -98,8 +98,10 @@ function getAdvDonation(req,res){
 function addCost(req,res){
 	var finalResult;
 	req.body.billDate=parseDate(req.body.billDate);
-	return  memberDAO.checkJCCount().then(async function(membeResponse){
-		var billNo=formatBill("cost",membeResponse)
+	return memberDAO.getBillNo(3).then(async function(response){
+		var flag='cost';
+		var jsonResponse = response[0];
+		var billNo=formatBill(flag,jsonResponse.config_value);
 		return memberDAO.saveCostData(req.body,billNo).then(function (response){
 			if(response!=null){
 					finalResult={
@@ -119,8 +121,9 @@ function addCost(req,res){
 	});
 }
 function formatBill(table,id){
+	console.log("id-->"+id);
 	var billNo="";
-	var count=id+1;
+	var count=parseInt(id)+1;
 	var date = new Date();
 	if(table=='cost'){
 		billNo = date.getFullYear()+"/JC/"+count;
@@ -131,13 +134,16 @@ function formatBill(table,id){
 		billNo = count + "/"+ date.getFullYear();
 	else	
 	billNo = count+"/L/"+date.getFullYear();
+	console.log("billNo-->"+billNo.toString());
 	return billNo.toString();
 }
 function addAdvDonation(req,res){
 	var finalResult;
 	req.body.billDate=parseDate(req.body.billDate);
-	return  memberDAO.checkAdvCount().then(async function(membeResponse){
-		var billNo=formatBill("advocate",membeResponse)
+	return memberDAO.getBillNo(4).then(async function(response){
+		var flag='advocate';
+		var jsonResponse = response[0];
+		var billNo=formatBill(flag,jsonResponse.config_value);
 		return memberDAO.saveAdvocateDonationData(req.body,billNo).then(function (response){
 			if(response!=null){
 					finalResult={
@@ -205,15 +211,11 @@ function addMember(req,res){
 		var finalResult;
 		return  memberDAO.checkMemberCount(req.body.rollNo).then(async function(membeResponser){
 			if(membeResponser==0){
-				//return  memberDAO.checkMemberAllCount().then(async function(reponseData){
-				//var flag=req.body.membershipFlag==1?'member':'locker';
-				//var billNo=formatBill(flag,reponseData)
 					return memberDAO.saveMember(req.body).then(function (response){
 						if(response!=null){
 								finalResult={
 									"status" : "Success",
-									"message" : "Member added Successfully",
-									//"billNo" : billNo
+									"message" : "Member added Successfully"
 								}
 							
 						}else{
@@ -224,7 +226,6 @@ function addMember(req,res){
 						}
 						res.send(finalResult);
 					});
-				//});
 			}else{
 				finalResult={
 					"status" : "Failure",
@@ -247,9 +248,11 @@ function memberPayment(req,res){
 		var finalResult;
 		req.body.fromDate=parseDate(req.body.fromDate);
 		req.body.toDate = parseDate(req.body.toDate);
-		return  memberDAO.checkMemberAllCount().then(async function(reponseData){
-				var flag=req.body.membershipFlag==1?'member':'locker';
-				var billNo=formatBill(flag,reponseData)
+		var billflag=req.body.membershipFlag==1?1:2;
+		return memberDAO.getBillNo(billflag).then(async function(response){
+			var flag=req.body.membershipFlag==1?'member':'locker';
+			var jsonResponse = response[0];
+			var billNo=formatBill(flag,jsonResponse.config_value);
 			return memberDAO.makePayment(req.body,billNo).then(function (response){
 				if(response!=null){
 						finalResult={
@@ -266,7 +269,7 @@ function memberPayment(req,res){
 				}
 				res.send(finalResult);
 			});
-		});
+		});	
 	}else{
 		finalResult={
 			"status" : "Failure",
@@ -288,7 +291,6 @@ function parseDate(input) {
   }
 function getMemberPayment(req,res){
 	var requestData=generateRequestData(req);
-	//return memberDAO.getMemberPayment(req.query.rollNo,req.query.membershipFlag,req.query.lockerFlag,req.query.year).then(function(response){
 	return memberDAO.getMemberPaymentByFlag(requestData,req.query.reportFlag,req).then(function(response){
 		var finalResult="";
 		if(response!=null){

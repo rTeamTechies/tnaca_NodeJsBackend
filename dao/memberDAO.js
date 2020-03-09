@@ -16,8 +16,9 @@ module.exports =  {
     checkAdvCount:checkAdvCount,
     checkMemberAllCount:checkMemberAllCount,
     getMembersByFlag:getMembersByFlag,
-	checkLockerAvailablity:checkLockerAvailablity,
-	surrenderLocker:surrenderLocker
+    checkLockerAvailablity:checkLockerAvailablity,
+    surrenderLocker:surrenderLocker,
+    getBillNo:getBillNo
   }
 
   function getMembers(req){
@@ -212,7 +213,7 @@ module.exports =  {
     try{
         const saveData={
           bill_no : billNo,
-		  name: data.name,
+		      name: data.name,
           roll_no : data.rollNo,
           from_date : data.fromDate,
           locker_id : data.lockerId,
@@ -404,4 +405,34 @@ module.exports =  {
       }catch(err){
         throw err;
       }
+  }
+
+  function getBillNo(flag){
+    var where ;
+    if(flag == 1){
+      where = {
+        "config_type" : 'SUBS_BILLNO'
+      }
+    }else if(flag ==2){
+      where = {
+        "config_type" :'LOCK_BILLNO'
+      }
+    }else if(flag ==3){
+      where = {
+        "config_type" :'JUDGECOST_BILLNO'
+      }
+    }else if(flag ==4){
+      where = {
+        "config_type" :'ADVDONA_BILLNO'
+      }
+    }
+    return new Promise((resolve, reject) => {
+        connection.Configuration.findAll({
+            where : where
+        })
+          .then(billNoRes => {
+              resolve(billNoRes);
+          })
+      })
+	
   }
